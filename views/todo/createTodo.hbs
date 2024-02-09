@@ -1,0 +1,13 @@
+{{#> app}}
+    {{#*inline "content"}}
+        <div class="flex w-[90vw] h-[90vh] justify-center items-center">
+            <form action="/todo/create/new-todo" method="post">
+                <input type="text" class="h-[60px] w-[300px] m-[20px] p-[20px] border-[1px] border-solid border-[black]" placeholder="Enter Title" name="title"
+                    id="title"><br>
+                <input type="text" class="h-[60px] w-[300px] m-[20px] p-[20px] border-[1px] border-solid border-[black]" placeholder="Enter Description"
+                    name="description" id="description"><br>
+                <button type="submit " class="m-[20px] p-[15px] w-[150px] bg-[green] rounded-[8px] text-[white]">Submit</button>
+            </form>
+        </div>
+    {{/inline}}
+{{/app}}
