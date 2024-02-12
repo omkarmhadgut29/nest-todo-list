@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
     <title> <% if (title) { %> <%= title %> <% } %> </title>
 </head>
 
@@ -31,6 +32,8 @@
                     if (response.ok) {
                         const todoToRemove = document.getElementById('todo-' + id);
                         todoToRemove.remove();
+                        console.log(todoToRemove)
+                        alert("TODO removed successfully.")
                     }
                 })
                 .catch(error => {
@@ -66,6 +69,11 @@
                 const todotext = document.createElement('div');
                 todotext.textContent = todo.title;
                 div.appendChild(todotext);
+
+                const todoDescription = document.createElement('div');
+                todoDescription.textContent = todo.description;
+                todoDescription.style.marginLeft = "10px";
+                div.appendChild(todoDescription);
 
                 const eiditButton = document.createElement('button');
                 eiditButton.textContent = 'Edit';
