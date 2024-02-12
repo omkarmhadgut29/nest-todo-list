@@ -1,0 +1,100 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> <% if (title) { %> <%= title %> <% } %> </title>
+</head>
+
+<body class=" ">
+    <div>
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-left: 80px; margin-right: 180px;">
+            <h1 class="">TODO List</h1>
+            <input type="button" value="Add Todo" onclick="addTodo()">
+        </div>
+        <div style="height: 80vh; width: 80vw;">
+            <div id="todo-list"
+                style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <!-- Todo items will be populated here using JS -->
+            </div>
+        </div>
+    </div>
+    <script>
+        function deleteTodo(id, index) {
+            fetch('/api/todo/' + id, {
+                method: 'DELETE',
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        const todoToRemove = document.getElementById('todo-' + id);
+                        todoToRemove.remove();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting TODO:', error);
+                });
+
+        }
+
+        function editTodo(id) {
+
+        }
+
+        function addTodo() {
+            location.replace("/add-todo")
+        }
+
+        function renderTodos(todos) {
+            const todoList = document.getElementById('todo-list');
+            todoList.innerHTML = '';
+            let index = 1;
+            todos.forEach(todo => {
+                const div = document.createElement('div');
+                div.style.display = "flex";
+                div.style.margin = "20px";
+                div.id = 'todo-' + todo.id;
+
+                const todoId = document.createElement('div');
+                todoId.textContent = index;
+                todoId.style.marginLeft = "10px";
+                todoId.style.marginRight = "10px";
+                div.appendChild(todoId)
+
+                const todotext = document.createElement('div');
+                todotext.textContent = todo.title;
+                div.appendChild(todotext);
+
+                const eiditButton = document.createElement('button');
+                eiditButton.textContent = 'Edit';
+                eiditButton.style.marginLeft = "10px";
+                eiditButton.addEventListener('click', () => editTodo(todo.id));
+                div.appendChild(eiditButton);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.style.marginLeft = "10px";
+                deleteButton.addEventListener('click', () => deleteTodo(todo.id));
+                div.appendChild(deleteButton);
+
+                todoList.appendChild(div);
+                index++;
+            });
+        }
+
+        function fetchTodos() {
+            fetch('/api/todo')
+                .then(response => response.json())
+                .then(renderTodos)
+                .catch(error => {
+                    console.error('Error fetching TODOs:', error);
+                });
+        }
+
+        fetchTodos();
+    </script>
+</body>
+
+</html>

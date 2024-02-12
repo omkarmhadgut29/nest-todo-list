@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { pool } from "src/database/connection";
+import { generateUUID } from "src/utils/generateId";
 import { CreateTodoType } from "src/utils/types";
 
 @Injectable()
@@ -47,9 +48,21 @@ export class TodoService {
         throw new ConflictException("Todo with title already exists");
       }
 
+      let id = generateUUID();
+
+      let [isIdExists] = await connection.query(
+        `Select * from todos where id = "${id}"`,
+      );
+
+      while (isIdExists && isIdExists[0]?.id === id) {
+        [isIdExists] = await connection.query(
+          `Select * from todos where id = "${id}"`,
+        );
+      }
+
       await connection.query(
-        "INSERT INTO todos (title, description) VALUES (?, ?)",
-        [todo.title, todo.description],
+        "INSERT INTO todos (id, title, description) VALUES (?, ?, ?)",
+        [id, todo.title, todo.description],
       );
 
       return { message: "Data added successfully..." };
@@ -80,19 +93,19 @@ export class TodoService {
     }
   }
 
-  async delete(title: string) {
+  async delete(id: string) {
     const connection = await pool.getConnection();
 
     try {
       const [todo] = await connection.query(
-        `Select * from todos where title = "${title}"`,
+        `Select * from todos where id = "${id}"`,
       );
 
       if (!todo || !todo[0]) {
         throw new NotFoundException("Todo not found...");
       }
 
-      await connection.query(`Delete From todos where title = "${title}"`);
+      await connection.query(`Delete From todos where id = "${id}"`);
 
       return { message: "Todo deleted successfully." };
     } finally {

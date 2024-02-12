@@ -1,8 +1,11 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -15,7 +18,7 @@ import { TodoService } from "./todo.service";
 import { CreateTodoDto } from "src/dtos/todo.dto";
 import { Response } from "express";
 
-@Controller("todo")
+@Controller("api/todo")
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
@@ -69,8 +72,8 @@ export class TodoController {
     return this.todoService.update(title, todo);
   }
 
-  @Delete(":title")
-  delete(@Param("title") title: string) {
-    return this.todoService.delete(title);
+  @Delete(":id")
+  delete(@Param("id") id: string) {
+    return this.todoService.delete(id);
   }
 }

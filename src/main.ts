@@ -10,6 +10,11 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  app.useStaticAssets(join(__dirname, "..", "public"));
+  app.setBaseViewsDir(join(__dirname, "..", "views"));
+  console.log(join(__dirname, "..", "views"));
+  // hbs.registerPartials(join(__dirname, "..", "views/layouts"));
+
   const config = new DocumentBuilder()
     .setTitle("TODO List")
     .setDescription("The todo API description")
@@ -19,12 +24,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
 
-  app.useStaticAssets(join(__dirname, "..", "public"));
-  app.setBaseViewsDir(join(__dirname, "..", "views"));
-  console.log(join(__dirname, "..", "views/layouts"));
-  hbs.registerPartials(join(__dirname, "..", "views/layouts"));
   // hbsUtils(hbs).registerWatchedPartials(join(__dirname, "..", "views/layouts"));
-  app.setViewEngine("hbs");
+  app.setViewEngine("ejs");
 
   await app.listen(3000);
 }

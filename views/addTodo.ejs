@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/addTodo.css">
+    <title><% if (title) { %> <%= title %> <% } else {  %> ADD TODO <% } %> </title>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <div class="backBtnDiv">
+                <input type="button" name="back" class="backBtn" value="&laquo; Back" onclick="handleBack()">
+            </div>
+            <div class="todo-container">
+                <div>
+                    <h1>Add Todos</h1>
+                </div>
+                <!-- <form action="/add-todo" method="post"> -->
+                <div>
+                    <input type="text" class="userInput" placeholder="Enter Title" name="title" id="title"><br>
+                    <input type="text" class="userInput" placeholder="Enter Description" name="description"
+                        id="description"><br>
+                    <input type="button" value="Add Todo" class="submitBtn" onclick="handleSubmit()">
+                </div>
+                <!-- </form> -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function handleBack() {
+            location.replace("/")
+        }
+
+        function handleSubmit() {
+            let title = document.getElementById("title").value;
+            let description = document.getElementById("description").value;
+
+            if ([ title, description ].some(field => !field || field?.trim() === "")) {
+                alert("Title and Description are required.");
+                return;
+            }
+
+            const todo = { title, description }
+
+            fetch("http://localhost:3000/api/todo", {
+                method: "POST",
+                body: JSON.stringify(todo),
+                headers: { "Content-Type": "application/json", }
+            }).then((response) => {
+                if (!response.ok) {
+                    response.json().then(errorData => {
+                        alert(errorData.message)
+                    })
+                    location.reload()
+                    return
+                }
+
+                alert("TODO Added")
+
+                location.replace("/")
+            }).catch((error) => {
+                console.log("first")
+                console.log(error)
+                throw new Error(error)
+            })
+
+        }
+    </script>
+</body>
+
+</html>
