@@ -20,12 +20,12 @@ export class TodoService {
     }
   }
 
-  async findByTitle(title: string) {
+  async findByTitle(id: string) {
     const connection = await pool.getConnection();
 
     try {
       const [todo] = await connection.query(
-        `Select * from todos where title = "${title}"`,
+        `Select * from todos where id = "${id}"`,
       );
 
       if (!todo || !todo[0]) {
@@ -71,12 +71,12 @@ export class TodoService {
     }
   }
 
-  async update(title: string, todo: CreateTodoType) {
+  async update(id: string, todo: CreateTodoType) {
     const connection = await pool.getConnection();
 
     try {
       const [isTodoExists] = await connection.query(
-        `Select * from todos where title = "${title}"`,
+        `Select * from todos where id = "${id}"`,
       );
 
       if (!isTodoExists || !isTodoExists[0]) {
@@ -84,7 +84,7 @@ export class TodoService {
       }
 
       const updatedTodo = await connection.query(
-        `Update todos Set title = "${todo.title}", description = "${todo.description}" where title = "${title}"`,
+        `Update todos Set title = "${todo.title}", description = "${todo.description}" where id = "${id}"`,
       );
 
       return { message: "Todo Updated successfully.", updatedTodo };

@@ -1,6 +1,12 @@
 body {
     /* background-color: #e0ffcd; */
     background-color: #fdffcd;
+    background-color: #e0ffcd;
+}
+
+button,
+input[type="button"] {
+    cursor: pointer;
 }
 
 .container {
@@ -19,22 +25,33 @@ body {
     top: 28px;
 }
 
+
+
 .backBtn {
     font-size: 16px;
-    background-color: #f1f1f1;
-    color: black;
+    border: none;
+    background-color: #ffcab0;
+    min-width: 130px;
+    min-height: 47px;
+    font-weight: bold;
+    color: rgb(91, 90, 90);
     padding: 6px 14px;
     border-radius: 8px;
     cursor: pointer;
+    transition: all .3s ease-in-out;
 }
 
 .backBtn:hover {
     background-color: #ddd;
+    background-color: #ffa97e;
+    color: #7b7171;
+    transform: scale(1.05);
 }
 
 .todo-container {
     border: 1px solid black;
     background-color: #ffebbb;
+    background-color: #fdffcd;
     border-radius: 8px;
     padding: 50px;
 }
@@ -44,19 +61,47 @@ body {
     height: 40px;
     width: 300px;
     margin: 20px 0;
-    border: 1px solid black;
     padding-left: 20px;
     font-size: 16px;
-    border-radius: 8px;
+    /* border-radius: 8px; */
+}
+
+input[type="text"] {
+    outline: none;
+    border: none;
+    background-color: #fdffcd;
+    border-bottom: 1px solid #a2a394;
 }
 
 .submitBtn {
     /* m-[20px] p-[15px] w-[150px] bg-[green] rounded-[8px] text-[white] */
     margin-top: 20px;
-    padding: 15px;
-    width: 150px;
+    /* padding: 15px; */
+    /* width: 150px; */
+    border: none;
     background-color: #ffcab0;
+    background-color: #ffebbb;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
+    background-color: #48cf67;
+    /* background-color: #e0ffcd; */
+    color: #fff;
+    border-radius: 16px;
+    padding: 5px 10px;
+    min-width: 130px;
+    min-height: 47px;
+    font-size: 15px;
+    font-weight: bold;
+    transition: all .3s ease-in-out;
+}
+
+.submitBtn:hover {
+    background-color: #1db340;
+    transform: scale(1.05);
+}
+
+label {
+    font-size: 18px;
+    font-weight: bold;
 }

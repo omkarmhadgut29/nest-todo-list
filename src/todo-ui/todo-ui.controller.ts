@@ -1,8 +1,12 @@
-import { Body, Controller, Get, Post, Render } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Render } from "@nestjs/common";
 import { TodoUiService } from "./todo-ui.service";
+import { CreateTodoDto } from "src/dtos/todo.dto";
+import { CreateTodoType } from "src/utils/types";
+import { ApiTags } from "@nestjs/swagger";
 
 // @Controller('todo-ui')
 @Controller("")
+@ApiTags("UI")
 export class TodoUiController {
   constructor(private readonly todoUiService: TodoUiService) {}
 
@@ -15,13 +19,19 @@ export class TodoUiController {
   @Get("add-todo")
   @Render("addTodo")
   addTodo() {
-    return { title: "TODO List" };
+    return { data: { title: "Add TODO List" } };
   }
 
-  @Get("update-todo")
+  @Post("update/:id")
   @Render("addTodo")
-  updateTodo() {
-    return { title: "TODO List" };
+  updateTodo(@Param("id") id: string, @Body() todo: CreateTodoType) {
+    // fetch(`http://localhost:3000/api/todo/${id}`)
+    // .then((response) => response.json())
+    // .then((todo) => {
+
+    // })
+    console.log(todo);
+    return { data: { todo, title: "Update TODO" } };
   }
 
   // @Post("add-todo")

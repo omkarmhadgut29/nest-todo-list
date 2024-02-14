@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/addTodo.css">
-    <title><% if (title) { %> <%= title %> <% } else {  %> ADD TODO <% } %> </title>
+    <title> <%- data?.title || "ADD TODO" %> </title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
 <body>
@@ -20,10 +21,26 @@
                 </div>
                 <!-- <form action="/add-todo" method="post"> -->
                 <div>
-                    <input type="text" class="userInput" placeholder="Enter Title" name="title" id="title"><br>
-                    <input type="text" class="userInput" placeholder="Enter Description" name="description"
-                        id="description"><br>
+                    <input type="hidden" name="id" id="id" value="<%- data?.todo?.id %>">
+
+                    <div>
+                        <div><label for="title">Title: </label></div>
+                        <input type="text" class="userInput" placeholder="Enter Title" name="title" id="title"
+                            value="<%- data?.todo?.title %>">
+                    </div><br>
+
+                    <div>
+                        <div><label for="description">Description: </label></div>
+                        <input type="text" class="userInput" placeholder="Enter Description" name="description"
+                            id="description" value="<%- data?.todo?.description %>">
+                    </div><br>
+
+                    <% if (data?.todo) { %>
+                    <input type="button" value="Update Todo" class="submitBtn" onclick="handleUpdate()">
+                    <% } else {  %>
                     <input type="button" value="Add Todo" class="submitBtn" onclick="handleSubmit()">
+                    <% } %>
+                    <!-- <input type="button" value="Add Todo" class="submitBtn" onclick=""> -->
                 </div>
                 <!-- </form> -->
             </div>
@@ -32,6 +49,7 @@
 
     <script>
 
+        console.log("first")
         function handleBack() {
             location.replace("/")
         }
@@ -41,28 +59,99 @@
             let description = document.getElementById("description").value;
 
             if ([ title, description ].some(field => !field || field?.trim() === "")) {
-                alert("Title and Description are required.");
+                // alert("Title and Description are required.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Title and Description are required."
+                });
                 return;
             }
 
             const todo = { title, description }
 
-            fetch("http://localhost:3000/api/todo", {
+            fetch(`http://localhost:3000/api/todo`, {
                 method: "POST",
                 body: JSON.stringify(todo),
                 headers: { "Content-Type": "application/json", }
             }).then((response) => {
                 if (!response.ok) {
                     response.json().then(errorData => {
-                        alert(errorData.message)
+                        // alert(errorData.message)
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: errorData.message
+                        });
                     })
                     location.reload()
                     return
                 }
 
-                alert("TODO Added")
+                // alert("TODO Added")
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: "Todo added successfully...",
+                    showConfirmButton: true,
+                }).then((result) => {
+                    location.replace("/")
+                });
 
-                location.replace("/")
+            }).catch((error) => {
+                console.log("first")
+                console.log(error)
+                throw new Error(error)
+            })
+
+        }
+
+        function handleUpdate() {
+            let id = document.getElementById("id").value;
+            let title = document.getElementById("title").value;
+            let description = document.getElementById("description").value;
+
+            if ([ title, description ].some(field => !field || field?.trim() === "")) {
+                // alert("Title and Description are required.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Title and Description are required."
+                });
+                return;
+            }
+
+            const todo = { title, description }
+
+            fetch(`http://localhost:3000/api/todo/${id}`, {
+                method: "PUT",
+                body: JSON.stringify(todo),
+                headers: { "Content-Type": "application/json", }
+            }).then((response) => {
+                if (!response.ok) {
+                    response.json().then(errorData => {
+                        // alert(errorData.message)
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops! Something went wrong...",
+                            text: errorData.message,
+                            showshowConfirmButton: true,
+                        }).then((result) => {
+                            location.replace("/")
+                        });;
+                    })
+                    return
+                }
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: "Todo Updated Successfully...",
+                    showConfirmButton: true,
+                }).then((result) => {
+                    location.replace("/")
+                });
+
             }).catch((error) => {
                 console.log("first")
                 console.log(error)

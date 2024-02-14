@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Render,
   Res,
   UsePipes,
@@ -17,8 +18,10 @@ import {
 import { TodoService } from "./todo.service";
 import { CreateTodoDto } from "src/dtos/todo.dto";
 import { Response } from "express";
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller("api/todo")
+@ApiTags("todos")
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
@@ -27,24 +30,9 @@ export class TodoController {
     return this.todoService.findAll();
   }
 
-  @Get("index")
-  @Render("todo/index")
-  async index() {
-    // return { title: "TODO List", message: "Hello world!" };
-    const todos = await this.todoService.findAll();
-    return { title: "TODO List", message: "Hello world!", todos };
-  }
-
-  @Get(":title")
-  fingByTitle(@Param("title") title: string) {
-    return this.todoService.findByTitle(title);
-  }
-
-  @Get("title/:title")
-  @Render("todo/index")
-  async todoByTitle(@Param("title") title: string) {
-    const todos = await this.todoService.findByTitle(title);
-    return { title: "TODO List", message: "Hello world!", todos: [todos] };
+  @Get(":id")
+  fingByTitle(@Param("id") id: string) {
+    return this.todoService.findByTitle(id);
   }
 
   @Post()
@@ -53,23 +41,9 @@ export class TodoController {
     return this.todoService.create(todo);
   }
 
-  @Get("create/new-todo")
-  @Render("todo/createTodo")
-  async createTodo() {
-    // const todos = await this.todoService.create(todo);
-    return { title: "TODO List", message: "Hello world!" };
-  }
-
-  @Post("create/new-todo")
-  @UsePipes(new ValidationPipe())
-  getTodo(@Body() todo: CreateTodoDto) {
-    // return todo;
-    return this.todoService.create(todo);
-  }
-
-  @Patch(":title")
-  update(@Param("title") title: string, @Body() todo: CreateTodoDto) {
-    return this.todoService.update(title, todo);
+  @Put(":id")
+  update(@Param("id") id: string, @Body() todo: CreateTodoDto) {
+    return this.todoService.update(id, todo);
   }
 
   @Delete(":id")

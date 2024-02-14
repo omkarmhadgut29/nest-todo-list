@@ -1,3 +1,124 @@
 body {
     background-color: #fdffcd;
+    background-color: #e0ffcd;
+    /* css/index.css */
+
+    /* body { */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* background-color: #f8f9fa; */
+}
+
+button,
+input[type="button"] {
+    cursor: pointer;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    min-height: 500px;
+    background-color: #ffebbb;
+    background-color: #fdffcd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-todo {
+    background-color: #48cf67;
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    padding: 5px 10px;
+    min-width: 100px;
+    min-height: 40px;
+    font-size: 15px;
+    font-weight: bold;
+    transition: all .3s ease-in-out;
+}
+
+.add-todo:hover {
+    background-color: #1db340;
+    transform: scale(1.05);
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    background-color: #007bff;
+    background-color: #ffebbb;
+    padding: 10px;
+    text-align: left;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+    background-color: #fdffb6;
+}
+
+tbody td {
+    padding: 20px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.todo-buttons button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.todo-buttons button:hover {
+    background-color: #ccc;
+}
+
+.todo-edit-button {
+    background-color: #48cf67;
+    color: #fff;
+    margin-right: 5px;
+}
+
+.todo-delete-button {
+    background-color: #dd5a67;
+    color: #fff;
+}
+
+.todo-edit-button,
+.todo-delete-button {
+    border: none;
+    border-radius: 16px;
+    padding: 5px 10px;
+    min-width: 60px;
+    min-height: 30px;
+    transition: all .3s ease-in-out;
+}
+
+.todo-edit-button:hover {
+    background-color: #1db340;
+}
+
+.todo-delete-button:hover {
+    background-color: #cb1325;
+}
+
+.todo-edit-button:hover,
+.todo-delete-button:hover {
+    /* filter: brightness(90%); */
+    transform: scale(1.05);
+}
+
+.todo-edit-button:active,
+.todo-delete-button:active {
+    transform: translateY(1px);
 }
