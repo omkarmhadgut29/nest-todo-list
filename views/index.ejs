@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/index.css">
-    <title> <% if (title) { %> <%= title %> <% } %> </title>
+    <title> <% if (data?.title) { %> <%= data?.title %> <% } %> </title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
@@ -14,7 +14,14 @@
     <div class="container">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h1 class="">TODO List</h1>
-            <input type="button" value="Add Todo" class="add-todo" onclick="addTodo()">
+            <div style="display: flex; align-items: center;">
+                <div style="display: flex; align-items: center;" id="userBtn">
+                    <input type="button" value="Login" class="login" onclick="login()">
+                    <span style="font-size: 25px;">&nbsp;/</span>
+                    <input type="button" value="Sign-up" class="sign-up" onclick="signup()">
+                </div>
+                <input type="button" value="Add Todo" class="add-todo" onclick="addTodo()">
+            </div>
         </div>
         <table>
             <thead>
@@ -32,6 +39,33 @@
     </div>
 
     <script>
+
+        if (localStorage?.getItem("accessToken")) {
+            const userBtn = document.getElementById("userBtn");
+            userBtn.innerHTML = `<input type="button" value="Log Out" class="sign-up" onclick="signout()">`
+        }
+
+        function signout() {
+            if (localStorage?.getItem("accessToken")) {
+                localStorage.removeItem("accessToken");
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: "Logout Successfull"
+                })
+                    .then((result) => {
+                        location.reload()
+                    });
+            }
+        }
+
+        function login() {
+            location.replace("/login")
+        }
+
+        function signup() {
+            location.replace("/register")
+        }
 
         function deleteTodo(id, index) {
             fetch('/api/todo/' + id, {
@@ -153,7 +187,20 @@
 
         function fetchTodos() {
             fetch('/api/todo')
-                .then(response => response.json())
+                .then(response =>
+                    response.json()
+                )
+                .then((data) => {
+                    if (data?.error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: data.error,
+                            text: data?.message || "Unauthorised request"
+                        });
+                        return;
+                    }
+                    return data
+                })
                 .then(renderTodos)
                 .catch(error => {
                     console.error('Error fetching TODOs:', error);
@@ -165,3 +212,10 @@
 </body>
 
 </html>
+
+<!-- console.log(response.json())
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Title and Description are required."
+                        }); -->

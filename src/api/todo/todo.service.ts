@@ -1,16 +1,22 @@
+import { CacheInterceptor } from "@nestjs/cache-manager";
 import {
   ConflictException,
   HttpException,
   Injectable,
   NotFoundException,
+  UseInterceptors,
 } from "@nestjs/common";
-import { pool } from "src/database/connection";
+import { pool, pool2 } from "src/database/connection";
 import { generateUUID } from "src/utils/generateId";
 import { CreateTodoType } from "src/utils/types";
 
 @Injectable()
 export class TodoService {
   async findAll() {
+    console.log("service");
+    // const connection = await pool(process).getConnection();
+
+    // const connection = await pool().getConnection();
     const connection = await pool.getConnection();
     try {
       const [rows] = await connection.query("Select * From todos");

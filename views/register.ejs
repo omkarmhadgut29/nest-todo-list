@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> <% if (data?.title) { %> <%= data?.title %> <% } %> </title>
+    <link rel="stylesheet" href="css/register.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <div class="backBtnDiv">
+                <input type="button" name="back" class="backBtn" value="&laquo; Back" onclick="handleBack()">
+            </div>
+            <div class="todo-container">
+                <div>
+                    <h1>Register</h1>
+                </div>
+                <!-- <form action="/add-todo" method="post"> -->
+                <div>
+
+                    <div style="display: flex;">
+                        <div>
+                            <div style="margin-right: 10px;">
+                                <div><label for="fullname">Fullname: </label></div>
+                                <input type="text" class="userInput" placeholder="Enter fullname" name="fullname"
+                                    id="fullname">
+                            </div>
+                            <div>
+                                <div><label for="email">Email: </label></div>
+                                <input type="text" class="userInput" placeholder="Enter email" name="email" id="email">
+                            </div>
+                        </div>
+                        <div style="margin-left: 10px;">
+                            <div>
+                                <div><label for="username">Username: </label></div>
+                                <input type="text" class="userInput" placeholder="Enter Username" name="username"
+                                    id="username">
+                            </div>
+                            <div>
+                                <div><label for="password">Password: </label></div>
+                                <input type="password" class="userInput" placeholder="Enter Password" name="password"
+                                    id="password">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: center; align-items: center;"><input type="button"
+                            value="Register" class="submitBtn" onclick="handleRegister()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        console.log("first")
+        function handleBack() {
+            location.replace("/")
+        }
+
+        function handleRegister() {
+            let username = document.getElementById("username").value;
+            let fullname = document.getElementById("fullname").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+
+            if ([ username, fullname, email, password ].some(field => !field || field?.trim() === "")) {
+                // alert("Title and Description are required.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "All fields are required."
+                });
+                return;
+            }
+
+            const user = { username, fullname, email, password }
+
+            fetch(`http://localhost:3000/api/auth/register`, {
+                method: "POST",
+                body: JSON.stringify(user),
+                headers: { "Content-Type": "application/json", }
+            }).then((response) => {
+                if (!response.ok) {
+                    response.json().then(errorData => {
+                        // alert(errorData.message)
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: errorData.message
+                        });
+                    })
+                    location.reload()
+                    return
+                }
+
+                // alert("TODO Added")
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: "User Registed successfully...",
+                    showConfirmButton: true,
+                }).then((result) => {
+                    location.replace("/login")
+                });
+
+            }).catch((error) => {
+                console.log("first")
+                console.log(error)
+                throw new Error(error)
+            })
+
+        }
+
+    </script>
+</body>
+
+</html>

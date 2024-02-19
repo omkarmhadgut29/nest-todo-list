@@ -26,7 +26,9 @@ input[type="button"] {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.add-todo {
+.add-todo,
+.login,
+.sign-up {
     background-color: #48cf67;
     color: #fff;
     border: none;
@@ -37,6 +39,15 @@ input[type="button"] {
     font-size: 15px;
     font-weight: bold;
     transition: all .3s ease-in-out;
+    margin-left: 10px;
+}
+
+.login {
+    background-color: #14d3a5;
+}
+
+.sign-up {
+    background-color: #c52a0a;
 }
 
 .add-todo:hover {

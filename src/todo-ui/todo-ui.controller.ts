@@ -13,7 +13,8 @@ export class TodoUiController {
   @Get()
   @Render("index")
   index() {
-    return { title: "TODO List" };
+    const data = { title: "TODO List" };
+    return { data };
   }
 
   @Get("add-todo")
@@ -32,6 +33,18 @@ export class TodoUiController {
     // })
     console.log(todo);
     return { data: { todo, title: "Update TODO" } };
+  }
+
+  @Get("register")
+  @Render("register")
+  registerUser() {
+    return { data: { title: "Register User" } };
+  }
+
+  @Get("login")
+  @Render("login")
+  loginUser() {
+    return { data: { title: "Login User" } };
   }
 
   // @Post("add-todo")
